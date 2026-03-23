@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CyberRange Lite</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div>
+        <h1>CyberRange Lite</h1>
+        <p>Educational cybersecurity simulator for safe attack-defense practice.</p>
+      </div>
+      <div class="warning">
+        <strong>For educational use only.</strong>
+        <span>Run payloads in controlled environments.</span>
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="card">
+        <h2>Scenarios</h2>
+        <p class="muted">Select a challenge to view objective and hints.</p>
+        <div id="scenario-list" class="list"></div>
+      </section>
+
+      <section class="card">
+        <h2>Attempt Submission</h2>
+        <div id="scenario-detail" class="detail">
+          <p class="muted">Choose a scenario to begin.</p>
+        </div>
+        <form id="attempt-form">
+          <label>
+            User ID
+            <input id="user-id" name="user-id" value="student-demo" minlength="2" maxlength="40" />
+          </label>
+          <label>
+            Payload
+            <textarea id="payload" name="payload" rows="5" required></textarea>
+          </label>
+          <label>
+            Evidence
+            <textarea id="evidence" name="evidence" rows="4"></textarea>
+          </label>
+          <button type="submit">Submit Attempt</button>
+        </form>
+        <div id="result" class="result"></div>
+      </section>
+
+      <section class="card full">
+        <h2>Leaderboard</h2>
+        <p class="muted">Top participants by score and successful attempts.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Total Score</th>
+              <th>Successes</th>
+              <th>Attempts</th>
+              <th>Last Attempt</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-body"></tbody>
+        </table>
+      </section>
+    </main>
+
+    <script src="./app.js" type="module"></script>
+  </body>
+  </html>

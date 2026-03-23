@@ -1,0 +1,162 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --bg: #0d1117;
+  --card: #161b22;
+  --line: #30363d;
+  --text: #c9d1d9;
+  --muted: #8b949e;
+  --accent: #2f81f7;
+  --pass: #238636;
+  --fail: #da3633;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 1rem;
+  padding: 1.2rem 2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.hero h1 {
+  margin: 0;
+}
+
+.warning {
+  border: 1px solid #d29922;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  color: #f2cc60;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  padding: 1.2rem 2rem;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 0.85rem;
+  padding: 1rem;
+}
+
+.card.full {
+  grid-column: 1 / span 2;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.scenario-item {
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  padding: 0.75rem;
+}
+
+.scenario-item button {
+  margin-top: 0.6rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 0.8rem;
+}
+
+textarea,
+input {
+  background: #0b0f14;
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.6rem;
+  width: 100%;
+}
+
+button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 0.6rem;
+  padding: 0.55rem 0.9rem;
+  margin-top: 0.8rem;
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(1.1);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border-bottom: 1px solid var(--line);
+  padding: 0.55rem 0.35rem;
+  text-align: left;
+}
+
+.result {
+  margin-top: 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  padding: 0.8rem;
+  min-height: 2.5rem;
+}
+
+.result.pass {
+  border-color: var(--pass);
+}
+
+.result.fail {
+  border-color: var(--fail);
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .card.full {
+    grid-column: 1;
+  }
+
+  .hero {
+    padding: 1rem;
+    flex-direction: column;
+  }
+}
