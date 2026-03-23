@@ -111,12 +111,6 @@ python3 -m pytest backend/tests -q
 4. **Path Traversal in File Download** (Medium)
 5. **Command Injection in Ping Utility** (Hard)
 
-## Report Document Assets
-
-- `docs/abstract.pdf`
-- `docs/literature_review.pdf`
-- `docs/generate_pdfs.py` to regenerate documents
-
 ## Important Safety Note
 
 This project is for educational use in controlled environments only.
