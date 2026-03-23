@@ -1,15 +1,20 @@
 # CyberRange Lite - Educational Cybersecurity Simulator
 
 CyberRange Lite is a special-project-ready cybersecurity simulator built for safe, controlled security practice.
-It includes challenge scenarios, attempt scoring, and a live leaderboard so students can learn attack/defense fundamentals in a measurable way.
+It includes challenge scenarios, authenticated practice, team mode, scoring analytics, and live leaderboards so students can learn attack/defense fundamentals in a measurable way.
 
 ## Features
 
 - Scenario catalog with difficulty and OWASP-aligned tags
 - Detailed challenge views with objective, hints, and safe payload examples
+- Role-based authentication (`student`, `instructor`, `admin`)
+- Team mode with invite codes and team-scoped attempt submissions
 - Attempt submission engine with automated scoring and feedback
-- Persistent leaderboard backed by SQLite
-- Browser UI for demos and project evaluations
+- Individual and team leaderboards
+- User progress dashboard (overall + per scenario metrics)
+- Persistent storage backed by SQLite
+- Browser UI for project demos and evaluations
+- Dockerized startup for one-command local run
 - API and scoring tests with pytest
 
 ## Tech Stack
@@ -29,26 +34,46 @@ It includes challenge scenarios, attempt scoring, and a live leaderboard so stud
 │   │   ├── models.py
 │   │   ├── scenarios.py
 │   │   └── services
+│   │       ├── auth.py
 │   │       └── scoring.py
 │   ├── requirements.txt
 │   └── tests
 │       ├── test_api.py
 │       └── test_scoring.py
+├── docker-compose.yml
+├── Dockerfile
 └── frontend
     ├── app.js
     ├── index.html
     └── style.css
 ```
 
+## Default Accounts
+
+These accounts are auto-created at app startup:
+
+- **admin** / `admin12345`
+- **instructor** / `instructor123`
+
+You can also self-register student/instructor users from the UI.
+
 ## Local Setup
 
 From repository root:
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
-pip install -r backend/requirements.txt
-uvicorn backend.app.main:app --reload
+python3 -m pip install -r backend/requirements.txt
+python3 -m uvicorn backend.app.main:app --reload
+```
+
+Open: `http://127.0.0.1:8000/app`
+
+## Docker Setup
+
+```bash
+docker compose up --build
 ```
 
 Open: `http://127.0.0.1:8000/app`
@@ -57,30 +82,40 @@ Open: `http://127.0.0.1:8000/app`
 
 ```bash
 source .venv/bin/activate
-pytest backend/tests -q
+python3 -m pytest backend/tests -q
 ```
 
 ## API Endpoints
 
 - `GET /health` - service health check
+- `POST /api/auth/register` - create account and get access token
+- `POST /api/auth/login` - login and get access token
+- `POST /api/auth/logout` - revoke current access token
+- `GET /api/auth/me` - current authenticated user
+- `GET /api/admin/users` - list users (admin only)
 - `GET /api/scenarios` - list available scenarios
 - `GET /api/scenarios/{scenario_id}` - fetch full scenario details
-- `POST /api/attempts` - submit payload + evidence for scoring
+- `POST /api/teams` - create a team
+- `POST /api/teams/join` - join a team using invite code
+- `GET /api/teams/mine` - list teams for current user
+- `POST /api/attempts` - submit payload + evidence for scoring (authenticated)
 - `GET /api/leaderboard` - ranked participants
+- `GET /api/leaderboard/teams` - ranked teams
+- `GET /api/progress/me` - user progress summary
 
 ## Implemented Scenarios
 
 1. **SQL Injection Login Bypass** (Easy)
 2. **Reflected XSS in Search** (Medium)
 3. **JWT Misconfiguration: alg:none** (Hard)
+4. **Path Traversal in File Download** (Medium)
+5. **Command Injection in Ping Utility** (Hard)
 
-## Suggested Next Enhancements
+## Report Document Assets
 
-- Add Docker + docker-compose for one-command startup
-- Add role-based auth (student/instructor/admin)
-- Add time-based event mode and team scoreboards
-- Integrate actual intentionally-vulnerable microservices for deeper labs
-- Add downloadable report/PDF for faculty evaluation
+- `docs/abstract.pdf`
+- `docs/literature_review.pdf`
+- `docs/generate_pdfs.py` to regenerate documents
 
 ## Important Safety Note
 

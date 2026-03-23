@@ -55,6 +55,38 @@ _SCENARIOS: Dict[str, ScenarioDetail] = {
             "Forged JWT with none algorithm and modified role claim",
         ],
     ),
+    "path-traversal-download": ScenarioDetail(
+        id="path-traversal-download",
+        title="Path Traversal in File Download",
+        difficulty="Medium",
+        tags=["owasp-a01", "path-traversal", "access-control"],
+        description=(
+            "A file download endpoint directly appends user input to a server-side path. "
+            "Demonstrate traversal input that reads files outside the intended directory."
+        ),
+        objective="Craft traversal payloads that break out of allowed file paths.",
+        hints=[
+            "Try ../ style traversal patterns.",
+            "URL-encoded traversal can bypass weak filters.",
+        ],
+        safe_payload_examples=["../../etc/passwd", "..%2f..%2f..%2fetc%2fpasswd"],
+    ),
+    "command-injection-ping": ScenarioDetail(
+        id="command-injection-ping",
+        title="Command Injection in Ping Utility",
+        difficulty="Hard",
+        tags=["owasp-a03", "command-injection", "input-validation"],
+        description=(
+            "An admin utility passes user input into a shell command without strict validation. "
+            "Show how command separators can execute unintended shell commands."
+        ),
+        objective="Construct payload input that appends an extra command safely in lab context.",
+        hints=[
+            "Shell separators like ;, &&, or | often indicate command chaining opportunities.",
+            "Demonstrate a harmless command to prove code execution.",
+        ],
+        safe_payload_examples=["127.0.0.1; id", "127.0.0.1 && whoami"],
+    ),
 }
 
 

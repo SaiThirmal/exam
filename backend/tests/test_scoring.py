@@ -31,3 +31,13 @@ def test_jwt_pass_with_none_alg_and_evidence():
     )
     assert score >= 60
     assert passed
+
+
+def test_path_traversal_payload_scores_pass():
+    score, passed, _ = evaluate_attempt(
+        scenario_id="path-traversal-download",
+        payload="../../etc/passwd",
+        evidence="File retrieved and passwd:x: entry visible in response.",
+    )
+    assert score >= 60
+    assert passed

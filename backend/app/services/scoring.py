@@ -17,6 +17,10 @@ def evaluate_attempt(scenario_id: str, payload: str, evidence: str) -> Tuple[int
         score += _score_xss(normalized_payload, normalized_evidence, feedback)
     elif scenario_id == "jwt-none-alg":
         score += _score_jwt(normalized_payload, normalized_evidence, feedback)
+    elif scenario_id == "path-traversal-download":
+        score += _score_path_traversal(normalized_payload, normalized_evidence, feedback)
+    elif scenario_id == "command-injection-ping":
+        score += _score_command_injection(normalized_payload, normalized_evidence, feedback)
     else:
         feedback.append("Unknown scenario.")
         return 0, False, feedback
@@ -109,4 +113,57 @@ def _score_jwt(payload: str, evidence: str, feedback: List[str]) -> int:
     if "dashboard admin" in evidence or "privilege escalated" in evidence:
         score += 15
         feedback.append("Evidence suggests successful privilege escalation.")
+    return score
+
+
+def _score_path_traversal(payload: str, evidence: str, feedback: List[str]) -> int:
+    score = 10
+    if "../" in payload or "..\\" in payload:
+        score += 40
+        feedback.append("Detected directory traversal pattern.")
+    elif "%2f" in payload or "%2e%2e" in payload:
+        score += 35
+        feedback.append("Detected URL-encoded traversal strategy.")
+    else:
+        feedback.append("Payload does not currently indicate traversal attempt.")
+
+    if "etc/passwd" in payload or "windows\\win.ini" in payload:
+        score += 15
+        feedback.append("Sensitive file target pattern detected.")
+
+    if "file retrieved" in evidence or "passwd:x:" in evidence or "win.ini" in evidence:
+        score += 30
+        feedback.append("Evidence suggests out-of-scope file disclosure.")
+    elif len(evidence) >= 20:
+        score += 15
+        feedback.append("Evidence details captured for validation.")
+    else:
+        feedback.append("Add stronger evidence with observed response content.")
+    return score
+
+
+def _score_command_injection(payload: str, evidence: str, feedback: List[str]) -> int:
+    score = 10
+    if ";" in payload or "&&" in payload or "|" in payload:
+        score += 35
+        feedback.append("Command chaining separator detected.")
+    else:
+        feedback.append("Payload lacks clear command-chaining symbols.")
+
+    if "id" in payload or "whoami" in payload or "uname" in payload:
+        score += 20
+        feedback.append("Harmless command-execution probe detected.")
+
+    if "uid=" in evidence or "root" in evidence or "www-data" in evidence:
+        score += 25
+        feedback.append("Evidence suggests command execution output.")
+    elif len(evidence) >= 20:
+        score += 15
+        feedback.append("Evidence details captured.")
+    else:
+        feedback.append("Add output evidence showing command execution.")
+
+    if "response time changed" in evidence or "unexpected command output" in evidence:
+        score += 10
+        feedback.append("Behavioral evidence supports command injection.")
     return score

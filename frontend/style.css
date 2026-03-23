@@ -62,8 +62,18 @@ body {
   grid-column: 1 / span 2;
 }
 
+.card.auth {
+  grid-column: 1 / span 2;
+}
+
 h2 {
   margin-top: 0;
+}
+
+.auth-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
 }
 
 .muted {
@@ -82,8 +92,21 @@ h2 {
   padding: 0.75rem;
 }
 
+.list.compact .scenario-item {
+  padding: 0.55rem 0.7rem;
+}
+
 .scenario-item button {
   margin-top: 0.6rem;
+}
+
+select {
+  background: #0b0f14;
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.6rem;
+  width: 100%;
 }
 
 label {
@@ -111,6 +134,24 @@ button {
   padding: 0.55rem 0.9rem;
   margin-top: 0.8rem;
   cursor: pointer;
+}
+
+button.secondary {
+  background: #6e7681;
+}
+
+.tab-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.7rem;
+}
+
+.tab {
+  margin-top: 0;
+}
+
+.tab.active {
+  outline: 2px solid #58a6ff;
 }
 
 button:hover {
@@ -151,7 +192,15 @@ td {
     padding: 1rem;
   }
 
+  .auth-grid {
+    grid-template-columns: 1fr;
+  }
+
   .card.full {
+    grid-column: 1;
+  }
+
+  .card.auth {
     grid-column: 1;
   }
 
