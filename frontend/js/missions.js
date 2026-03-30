@@ -1,4 +1,12 @@
-import { state, escapeHtml, initializeLayout, notify, setAuthState, fetchJson } from "./core.js";
+import {
+  apiRequest,
+  escapeHtml,
+  initPage,
+  requireAuth,
+  setSelectedScenario,
+  showToast,
+  state,
+} from "./core.js";
 
 const scenarioListEl = document.getElementById("scenario-list");
 const scenarioDetailEl = document.getElementById("scenario-detail");
@@ -35,7 +43,7 @@ function renderScenarios(items) {
       const scenarioId = button.getAttribute("data-scenario-id");
       selectedScenarioId = scenarioId;
       try {
-        const detail = await fetchJson(`/api/scenarios/${scenarioId}`);
+        const detail = await apiRequest(`/api/scenarios/${scenarioId}`);
         scenarioDetailEl.innerHTML = `
           <h3>${escapeHtml(detail.title)}</h3>
           <p>${escapeHtml(detail.description)}</p>
@@ -47,9 +55,10 @@ function renderScenarios(items) {
             .map((sample) => `<li><code>${escapeHtml(sample)}</code></li>`)
             .join("")}</ul>
         `;
-        notify(`Mission loaded: ${detail.title}`);
+        setSelectedScenario(scenarioId, detail.title);
+        showToast(`Mission loaded: ${detail.title}`);
       } catch (error) {
-        notify(error.message, true);
+        showToast(error.message, true);
       }
     });
   });
@@ -57,10 +66,10 @@ function renderScenarios(items) {
 
 async function loadTeams() {
   teamSelectEl.innerHTML = `<option value="">No team (individual)</option>`;
-  if (!state.user) {
+  if (!state.currentUser) {
     return;
   }
-  const teams = await fetchJson("/api/teams/mine");
+  const teams = await apiRequest("/api/teams/mine");
   teams.forEach((team) => {
     const option = document.createElement("option");
     option.value = String(team.id);
@@ -79,16 +88,15 @@ function renderResult(result) {
 
 attemptFormEl.addEventListener("submit", async (event) => {
   event.preventDefault();
-  if (!state.user) {
-    notify("Please login before submitting attempts.", true);
+  if (!requireAuth()) {
     return;
   }
   if (!selectedScenarioId) {
-    notify("Load a mission first.", true);
+    showToast("Load a mission first.", true);
     return;
   }
   try {
-    const result = await fetchJson("/api/attempts", {
+    const result = await apiRequest("/api/attempts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -99,20 +107,27 @@ attemptFormEl.addEventListener("submit", async (event) => {
       }),
     });
     renderResult(result);
-    notify(`Attempt scored: ${result.score}/100`);
+    showToast(`Attempt scored: ${result.score}/100`);
   } catch (error) {
     resultEl.className = "result fail";
     resultEl.textContent = error.message;
-    notify(error.message, true);
+    showToast(error.message, true);
   }
 });
 
 async function init() {
-  await initializeLayout("missions");
-  await setAuthState();
-  const scenarios = await fetchJson("/api/scenarios");
+  await initPage("missions");
+  selectedScenarioId = state.selectedScenarioId || null;
+  if (state.selectedScenarioTitle) {
+    scenarioDetailEl.innerHTML = `
+      <strong>Last selected mission</strong>
+      <p>${escapeHtml(state.selectedScenarioTitle)} (ID: ${escapeHtml(state.selectedScenarioId)})</p>
+      <p class="muted">Load this mission again from the list to view full details.</p>
+    `;
+  }
+  const scenarios = await apiRequest("/api/scenarios");
   renderScenarios(scenarios);
   await loadTeams();
 }
 
-init().catch((error) => notify(error.message, true));
+init().catch((error) => showToast(error.message, true));

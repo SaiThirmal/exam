@@ -1,4 +1,4 @@
-import { apiRequest, initShell, showToast } from "./core.js";
+import { apiRequest, escapeHtml, formatDateTime, initPage, showToast } from "./core.js";
 
 let mode = "individual";
 
@@ -33,11 +33,11 @@ function renderRows(entries) {
       (entry, idx) => `
       <tr>
         <td>${idx + 1}</td>
-        <td>${entry.user_id || entry.team_name}</td>
+        <td>${escapeHtml(entry.user_id || entry.team_name)}</td>
         <td>${entry.total_score}</td>
         <td>${entry.successful_attempts}</td>
         <td>${entry.total_attempts}</td>
-        <td>${new Date(entry.last_attempt_at).toLocaleString()}</td>
+        <td>${formatDateTime(entry.last_attempt_at)}</td>
       </tr>
     `,
     )
@@ -71,7 +71,7 @@ function bindTabs() {
 }
 
 async function init() {
-  await initShell("leaderboard");
+  await initPage("leaderboard");
   bindTabs();
   await loadLeaderboard();
 }

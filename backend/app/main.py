@@ -190,6 +190,10 @@ def create_app(db_path: str = "backend/cyberrange.db") -> FastAPI:
     def my_progress(user: UserPublic = Depends(_require_user)):
         return app.state.db.get_user_progress(user_id=user.id)
 
+    @app.get("/app", include_in_schema=False)
+    def app_root() -> RedirectResponse:
+        return RedirectResponse(url="/app/")
+
     frontend_dir = Path(__file__).resolve().parents[2] / "frontend"
     if frontend_dir.exists():
         app.mount("/app", StaticFiles(directory=str(frontend_dir), html=True), name="frontend")

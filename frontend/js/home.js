@@ -1,12 +1,11 @@
-import { apiRequest, ensureAuthBadge, renderNav, showToast } from "./core.js";
+import { apiRequest, initPage, showToast } from "./core.js";
 
 const scenariosEl = document.getElementById("stat-scenarios");
 const topUserEl = document.getElementById("stat-top-user");
 const topTeamEl = document.getElementById("stat-top-team");
 
 async function init() {
-  renderNav("index");
-  await ensureAuthBadge();
+  await initPage("index");
   try {
     const [scenarios, individual, teams] = await Promise.all([
       apiRequest("/api/scenarios"),

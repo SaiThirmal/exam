@@ -1,4 +1,4 @@
-import { apiRequest, bindGlobalUI, requireAuth, showToast, hydrateUser } from "./core.js";
+import { apiRequest, escapeHtml, formatDateTime, initPage, requireAuth, showToast } from "./core.js";
 
 const progressBoxEl = document.getElementById("progress-box");
 
@@ -12,7 +12,7 @@ function renderProgress(progress) {
   const rows = progress.per_scenario
     .map(
       (item) =>
-        `<li>${item.scenario_id} · best ${item.best_score}/100 · attempts ${item.attempts}</li>`
+        `<li>${escapeHtml(item.scenario_id)} · best ${item.best_score}/100 · attempts ${item.attempts}</li>`
     )
     .join("");
 
@@ -22,16 +22,13 @@ function renderProgress(progress) {
     <strong>Successful Attempts:</strong> ${progress.successful_attempts}<br />
     <strong>Total Score:</strong> ${progress.total_score}<br />
     <strong>Average Score:</strong> ${progress.average_score}<br />
-    <strong>Last Attempt:</strong> ${
-      progress.last_attempt_at ? new Date(progress.last_attempt_at).toLocaleString() : "N/A"
-    }<br />
+    <strong>Last Attempt:</strong> ${formatDateTime(progress.last_attempt_at)}<br />
     <ul>${rows}</ul>
   `;
 }
 
 async function init() {
-  bindGlobalUI("progress");
-  await hydrateUser();
+  await initPage("progress");
   if (!requireAuth()) {
     progressBoxEl.className = "result fail";
     progressBoxEl.textContent = "Please sign in from the Auth page to view your progress.";

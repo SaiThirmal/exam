@@ -1,4 +1,4 @@
-import { apiRequest, bindSharedUi, saveToken, showToast } from "./core.js";
+import { apiRequest, initPage, setToken, showToast, state } from "./core.js";
 
 const registerFormEl = document.getElementById("register-form");
 const loginFormEl = document.getElementById("login-form");
@@ -8,7 +8,7 @@ const registerPasswordEl = document.getElementById("register-password");
 const registerRoleEl = document.getElementById("register-role");
 const loginUsernameEl = document.getElementById("login-username");
 const loginPasswordEl = document.getElementById("login-password");
-const authResultEl = document.getElementById("auth-result");
+const authResultEl = document.getElementById("auth-panel");
 
 async function refreshMe() {
   try {
@@ -38,10 +38,11 @@ registerFormEl.addEventListener("submit", async (event) => {
         role: registerRoleEl.value,
       }),
     });
-    saveToken(result.access_token);
+    setToken(result.access_token);
+    state.currentUser = result.user;
     registerFormEl.reset();
     showToast(`Welcome, ${result.user.username}`);
-    await bindSharedUi();
+    await initPage("auth");
     await refreshMe();
   } catch (error) {
     showToast(error.message, true);
@@ -59,9 +60,10 @@ loginFormEl.addEventListener("submit", async (event) => {
         password: loginPasswordEl.value,
       }),
     });
-    saveToken(result.access_token);
+    setToken(result.access_token);
+    state.currentUser = result.user;
     showToast("Signed in successfully");
-    await bindSharedUi();
+    await initPage("auth");
     await refreshMe();
   } catch (error) {
     showToast(error.message, true);
@@ -74,11 +76,11 @@ logoutBtnEl.addEventListener("click", async () => {
   } catch {
     // Best effort logout.
   }
-  saveToken(null);
+  setToken(null);
   showToast("Signed out");
-  await bindSharedUi();
+  await initPage("auth");
   await refreshMe();
 });
 
-await bindSharedUi();
+await initPage("auth");
 await refreshMe();
