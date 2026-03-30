@@ -1,0 +1,12 @@
+services:
+  cyberrange-lite:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cyberrange-lite
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app/backend
+      - ./frontend:/app/frontend
+    restart: unless-stopped

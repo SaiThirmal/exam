@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CyberRange Lite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/app/style.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <a class="brand" href="/app/index.html">CyberRange <span>Lite</span></a>
+        <nav class="nav">
+          <a data-nav="index" href="/app/index.html">Home</a>
+          <a data-nav="auth" href="/app/auth.html">Auth</a>
+          <a data-nav="teams" href="/app/teams.html">Teams</a>
+          <a data-nav="missions" href="/app/missions.html">Missions</a>
+          <a data-nav="leaderboard" href="/app/leaderboard.html">Leaderboard</a>
+          <a data-nav="progress" href="/app/progress.html">Progress</a>
+        </nav>
+        <div class="auth-chip">
+          <span id="auth-dot" class="dot"></span>
+          <span id="auth-badge">Guest</span>
+        </div>
+      </header>
+
+      <main class="page">
+        <section class="hero-block">
+          <p class="eyebrow">Okey Studio Inspired Experience</p>
+          <h1>From theory-heavy classes to real security practice.</h1>
+          <p class="lead">
+            CyberRange Lite now runs as a sleek multi-page product: authentication, team operations, mission
+            execution, leaderboard analytics, and progress tracking.
+          </p>
+          <div class="hero-actions">
+            <a class="btn" href="/app/missions.html">Start Missions</a>
+            <a class="btn ghost" href="/app/leaderboard.html">View Leaderboard</a>
+          </div>
+        </section>
+
+        <section class="stats-grid">
+          <article class="card stat">
+            <span>Scenario Library</span>
+            <strong id="stat-scenarios">0</strong>
+          </article>
+          <article class="card stat">
+            <span>Top Individual</span>
+            <strong id="stat-top-user">-</strong>
+          </article>
+          <article class="card stat">
+            <span>Top Team</span>
+            <strong id="stat-top-team">-</strong>
+          </article>
+        </section>
+
+        <section class="feature-grid">
+          <article class="card feature">
+            <h2>Identity & Access</h2>
+            <p>Create accounts, sign in, and manage roles for student/instructor/admin workflows.</p>
+            <a href="/app/auth.html">Open Auth Page</a>
+          </article>
+          <article class="card feature">
+            <h2>Team Operations</h2>
+            <p>Create teams, join with invite code, and choose team scope for challenge submissions.</p>
+            <a href="/app/teams.html">Open Teams Page</a>
+          </article>
+          <article class="card feature">
+            <h2>Mission Console</h2>
+            <p>Load vulnerability scenarios, submit payload + evidence, and receive structured feedback.</p>
+            <a href="/app/missions.html">Open Missions Page</a>
+          </article>
+          <article class="card feature">
+            <h2>Analytics</h2>
+            <p>Switch between individual/team rankings and monitor personal performance trends.</p>
+            <a href="/app/progress.html">Open Progress Page</a>
+          </article>
+        </section>
+
+        <section class="card notice">
+          <strong>Safe-use policy:</strong> this platform is for controlled educational environments only.
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="/app/js/home.js" type="module"></script>
+  </body>
+</html>
