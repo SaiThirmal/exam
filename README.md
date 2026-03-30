@@ -43,8 +43,20 @@ It includes challenge scenarios, authenticated practice, team mode, scoring anal
 ├── docker-compose.yml
 ├── Dockerfile
 └── frontend
-    ├── app.js
+    ├── auth.html
+    ├── leaderboard.html
+    ├── missions.html
+    ├── progress.html
+    ├── teams.html
     ├── index.html
+    ├── js
+    │   ├── core.js
+    │   ├── home.js
+    │   ├── auth.js
+    │   ├── teams.js
+    │   ├── missions.js
+    │   ├── leaderboard.js
+    │   └── progress.js
     └── style.css
 ```
 

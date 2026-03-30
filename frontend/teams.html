@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CyberRange Lite · Teams</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <a class="brand" href="./index.html">CyberRange <span>Lite</span></a>
+        <nav class="nav">
+          <a data-nav="index" href="./index.html">Home</a>
+          <a data-nav="auth" href="./auth.html">Auth</a>
+          <a data-nav="teams" href="./teams.html">Teams</a>
+          <a data-nav="missions" href="./missions.html">Missions</a>
+          <a data-nav="leaderboard" href="./leaderboard.html">Leaderboard</a>
+          <a data-nav="progress" href="./progress.html">Progress</a>
+        </nav>
+        <div class="auth-chip">
+          <span id="auth-dot" class="dot"></span>
+          <span id="auth-badge">Guest</span>
+        </div>
+      </header>
+
+      <main class="page">
+        <section class="hero-block">
+          <p class="eyebrow">Team Mode</p>
+          <h1>Build squads and submit as a unit.</h1>
+          <p class="lead">Create teams, share invite codes, and switch mission submissions between solo/team scope.</p>
+        </section>
+
+        <section class="grid-2">
+          <article class="card">
+            <h2>Create Team</h2>
+            <p>Only signed-in users can create teams.</p>
+            <form id="create-team-form">
+              <label>
+                Team name
+                <input id="team-name" minlength="3" maxlength="60" required placeholder="e.g. Red Falcons" />
+              </label>
+              <button type="submit">Create Team</button>
+            </form>
+          </article>
+
+          <article class="card">
+            <h2>Join Team</h2>
+            <p>Use an invite code shared by an existing member.</p>
+            <form id="join-team-form">
+              <label>
+                Invite code
+                <input id="team-invite" minlength="6" maxlength="32" required placeholder="Paste invite code" />
+              </label>
+              <button type="submit">Join Team</button>
+            </form>
+          </article>
+        </section>
+
+        <section class="card">
+          <h2>My Teams</h2>
+          <p>Select default attempt scope for mission submissions.</p>
+          <label>
+            Attempt scope
+            <select id="team-select">
+              <option value="">No team (individual)</option>
+            </select>
+          </label>
+          <div id="teams-list" class="list"></div>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="./js/teams.js" type="module"></script>
+  </body>
+</html>

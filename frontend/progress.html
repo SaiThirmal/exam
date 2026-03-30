@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CyberRange Lite · Progress</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <a class="brand" href="./index.html">CyberRange <span>Lite</span></a>
+        <nav class="nav">
+          <a data-nav="index" href="./index.html">Home</a>
+          <a data-nav="auth" href="./auth.html">Auth</a>
+          <a data-nav="teams" href="./teams.html">Teams</a>
+          <a data-nav="missions" href="./missions.html">Missions</a>
+          <a data-nav="leaderboard" href="./leaderboard.html">Leaderboard</a>
+          <a data-nav="progress" href="./progress.html">Progress</a>
+        </nav>
+        <div class="auth-chip">
+          <span id="auth-dot" class="dot"></span>
+          <span id="auth-badge">Guest</span>
+        </div>
+      </header>
+
+      <main class="page">
+        <section class="hero-block">
+          <p class="eyebrow">Profile Analytics</p>
+          <h1>Track your performance trends.</h1>
+          <p class="lead">
+            Review attempts, success rate, average score, and your strongest scenario domains.
+          </p>
+          <div class="hero-actions">
+            <a class="btn ghost" href="./missions.html">Attempt New Mission</a>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>My Progress Snapshot</h2>
+          <p class="muted">Data refreshes automatically for your logged-in account.</p>
+          <div id="progress-box" class="result">Login to view your progress.</div>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="./js/progress.js" type="module"></script>
+  </body>
+</html>
