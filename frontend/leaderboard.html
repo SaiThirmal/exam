@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CyberRange Lite - Leaderboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/app/style.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <a class="brand" href="/app/index.html">CyberRange <span>Lite</span></a>
+        <nav class="nav">
+          <a data-nav="index" href="/app/index.html">Home</a>
+          <a data-nav="auth" href="/app/auth.html">Auth</a>
+          <a data-nav="teams" href="/app/teams.html">Teams</a>
+          <a data-nav="missions" href="/app/missions.html">Missions</a>
+          <a data-nav="leaderboard" href="/app/leaderboard.html">Leaderboard</a>
+          <a data-nav="progress" href="/app/progress.html">Progress</a>
+        </nav>
+        <div class="auth-chip">
+          <span id="auth-dot" class="dot"></span>
+          <span id="auth-badge">Guest</span>
+        </div>
+      </header>
+
+      <main class="page">
+        <section class="hero-block">
+          <p class="eyebrow">Leaderboard</p>
+          <h1>Track top performers and teams.</h1>
+          <p class="lead">Switch between individual and team rankings in real time.</p>
+        </section>
+
+        <section class="card">
+          <h2>Ranking View</h2>
+          <p class="muted">Toggle the mode to inspect student and team standings.</p>
+          <div class="tab-row">
+            <button id="individual-tab" class="tab active" type="button">Individual</button>
+            <button id="team-tab" class="tab" type="button">Team</button>
+          </div>
+          <table>
+            <thead>
+              <tr id="leaderboard-header">
+                <th>#</th>
+                <th>User</th>
+                <th>Total Score</th>
+                <th>Successes</th>
+                <th>Attempts</th>
+                <th>Last Attempt</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-body"></tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="/app/js/leaderboard.js" type="module"></script>
+  </body>
+</html>
