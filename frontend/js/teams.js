@@ -3,9 +3,13 @@ import { apiRequest, escapeHtml, initPage, requireAuth, setSelectedTeamId, setTo
 const createTeamFormEl = document.getElementById("create-team-form");
 const joinTeamFormEl = document.getElementById("join-team-form");
 const teamsListEl = document.getElementById("teams-list");
-const teamScopeEl = document.getElementById("team-select");
+const teamScopeEl = document.getElementById("team-scope") || document.getElementById("team-select");
 
 function renderTeams(teams) {
+  if (!teamScopeEl) {
+    showToast("Team scope control not found on page.", true);
+    return;
+  }
   teamScopeEl.innerHTML = `<option value="">No team (individual)</option>`;
   if (!teams.length) {
     teamsListEl.innerHTML = `<div class="item"><span class="muted">No teams joined yet.</span></div>`;
@@ -90,9 +94,11 @@ joinTeamFormEl.addEventListener("submit", async (event) => {
   }
 });
 
-teamScopeEl.addEventListener("change", () => {
-  setSelectedTeamId(teamScopeEl.value || "");
-});
+if (teamScopeEl) {
+  teamScopeEl.addEventListener("change", () => {
+    setSelectedTeamId(teamScopeEl.value || "");
+  });
+}
 
 document.getElementById("logout-btn")?.addEventListener("click", async () => {
   try {
