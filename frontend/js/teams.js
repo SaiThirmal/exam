@@ -3,15 +3,21 @@ import { apiRequest, escapeHtml, initPage, requireAuth, setSelectedTeamId, setTo
 const createTeamFormEl = document.getElementById("create-team-form");
 const joinTeamFormEl = document.getElementById("join-team-form");
 const teamsListEl = document.getElementById("teams-list");
-const teamScopeEl = document.getElementById("team-select");
+const teamScopeEl = document.getElementById("team-scope") || document.getElementById("team-select");
 
 function renderTeams(teams) {
+  if (!teamScopeEl) {
+    showToast("Team scope control not found on page.", true);
+    return;
+  }
+
   teamScopeEl.innerHTML = `<option value="">No team (individual)</option>`;
   if (!teams.length) {
     teamsListEl.innerHTML = `<div class="item"><span class="muted">No teams joined yet.</span></div>`;
     setSelectedTeamId("");
     return;
   }
+
   teamsListEl.innerHTML = teams
     .map(
       (team) => `
@@ -26,6 +32,7 @@ function renderTeams(teams) {
     `
     )
     .join("");
+
   teams.forEach((team) => {
     const option = document.createElement("option");
     option.value = String(team.id);
@@ -46,22 +53,31 @@ async function loadTeams() {
     renderTeams([]);
     return;
   }
+
   const teams = await apiRequest("/api/teams/mine");
   renderTeams(teams);
 }
 
-createTeamFormEl.addEventListener("submit", async (event) => {
+createTeamFormEl?.addEventListener("submit", async (event) => {
   event.preventDefault();
+
   if (!requireAuth()) {
     return;
   }
+
   try {
-    const teamName = document.getElementById("team-name").value.trim();
+    const teamName = document.getElementById("team-name")?.value.trim() || "";
+    if (!teamName) {
+      showToast("Please enter a team name.", true);
+      return;
+    }
+
     await apiRequest("/api/teams", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: teamName }),
     });
+
     createTeamFormEl.reset();
     await loadTeams();
     showToast("Team created");
@@ -70,18 +86,26 @@ createTeamFormEl.addEventListener("submit", async (event) => {
   }
 });
 
-joinTeamFormEl.addEventListener("submit", async (event) => {
+joinTeamFormEl?.addEventListener("submit", async (event) => {
   event.preventDefault();
+
   if (!requireAuth()) {
     return;
   }
+
   try {
-    const inviteCode = document.getElementById("team-invite").value.trim();
+    const inviteCode = document.getElementById("team-invite")?.value.trim() || "";
+    if (!inviteCode) {
+      showToast("Please enter invite code.", true);
+      return;
+    }
+
     await apiRequest("/api/teams/join", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ invite_code: inviteCode }),
     });
+
     joinTeamFormEl.reset();
     await loadTeams();
     showToast("Joined team");
@@ -90,9 +114,11 @@ joinTeamFormEl.addEventListener("submit", async (event) => {
   }
 });
 
-teamScopeEl.addEventListener("change", () => {
-  setSelectedTeamId(teamScopeEl.value || "");
-});
+if (teamScopeEl) {
+  teamScopeEl.addEventListener("change", () => {
+    setSelectedTeamId(teamScopeEl.value || "");
+  });
+}
 
 document.getElementById("logout-btn")?.addEventListener("click", async () => {
   try {
@@ -100,6 +126,7 @@ document.getElementById("logout-btn")?.addEventListener("click", async () => {
   } catch {
     // Best effort.
   }
+
   setToken(null);
   setSelectedTeamId("");
   await initPage("teams");
